@@ -2,6 +2,7 @@ from datetime import date
 
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.admin.sites import AdminSite
 from public_admin.sites import PublicAdminSite, PublicApp
 
 from information_requests.models import Complaint, InformationRequest, PublicAgency
@@ -44,6 +45,15 @@ class RequestPublicAdminSite(PublicAdminSite):
     index_title = "Dashboard"
 
 
+class PrivateAdminSite(AdminSite):
+    organization = (
+        f" - {settings.ORGANIZATION_NAME}" if settings.ORGANIZATION_NAME else ""
+    )
+    site_title = f"Administração {organization}"
+    site_header = f"Administração {organization}"
+    index_title = "Dashboard"
+
+
 @admin.register(InformationRequest)
 class InformationRequestModelAdmin(InformationRequestMixin, admin.ModelAdmin):
     pass
@@ -82,4 +92,6 @@ public_app = PublicApp(
 public_admin = RequestPublicAdminSite(public_apps=public_app)
 public_admin.register(InformationRequest, PublicRequestModelAdmin)
 public_admin.register(Complaint, ComplaintModelAdmin)
-admin.site.disable_action("delete_selected")
+
+admin_site = PrivateAdminSite()
+admin_site.disable_action("delete_selected")

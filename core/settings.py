@@ -15,13 +15,13 @@ ALLOWED_HOSTS = config(
 
 INSTALLED_APPS = [
     "public_admin",
-    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "information_requests",
+    "information_requests.apps.InformationRequestsConfig",
+    "information_requests.apps.PrivateAdminConfig",
 ]
 
 MIDDLEWARE = [
